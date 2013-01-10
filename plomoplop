@@ -3,10 +3,10 @@
 # plomoplop:
 # 
 # plomlompom's bash implementation of the Oplop algorithm as described
-# in <http://code.google.com/p/oplop/wiki/HowItWorks> Depency: openssl.
+# in <http://code.google.com/p/oplop/wiki/HowItWorks>
 # 
-# For an alternative bash implementation that uses md5sum and xxd
-# instead of openssl, see: <http://codegolf.stackexchange.com/a/4995>
+# For an alternative, much shorter (one-line) bash implementation that
+# depends on xxd, see: <http://codegolf.stackexchange.com/a/4995>
 
 if [[ $1 == '' || $2 == '' ]]
 then
@@ -14,10 +14,13 @@ then
   exit
 fi
 
-# Concatenate parameters to $string; get its md5 sum in binary.
-string=`echo -n $1$2 | openssl dgst -md5 -binary`
+# Concatenate parameters to $string; get md5sum's hex representation.
+string=`echo -n $1$2 | md5sum | cut -c-32`
 
-# Generate URL-safe base64 string from binary md5 sum.
+# Transform hex representation of md5sum to binary data.
+string=`echo -e $(echo -n $string | sed -e 's/../\\\x&/g')`
+
+# Generate URL-safe base64 string from binary md5sum.
 string=`echo $string | base64 | tr '+' '-' | tr '/' '_'`
 
 # If the first 8 chars contain a digit, return those as the password.
