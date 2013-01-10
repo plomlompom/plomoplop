@@ -1,0 +1,49 @@
+#/bin/bash
+
+# plomoplop:
+# 
+# plomlompom's bash implementation of the Oplop algorithm as described
+# in <http://code.google.com/p/oplop/wiki/HowItWorks> Depency: openssl.
+# 
+# For an alternative bash implementation that uses md5sum and xxd
+# instead of openssl, see: <http://codegolf.stackexchange.com/a/4995>
+
+if [[ $1 == '' || $2 == '' ]]
+then
+  echo 'usage: plomoplom.sh MASTER_PASSWORD ACCOUNT_NICKNAME'
+  exit
+fi
+
+# Concatenate parameters to $string; get its md5 sum in binary.
+# value's base64 encoding.
+string=`echo -n $1$2 | openssl dgst -md5 -binary`
+
+# Generate URL-safe base64 string from binary md5 sum.
+string=`echo $string | base64 | tr '+' '-' | tr '/' '_'`
+
+# If the first 8 chars contain a digit, return those as the password.
+pwtemp=`echo $string | cut -c -8`
+if [[ $pwtemp == *[0-9]* ]]
+then
+  echo $pwtemp
+  exit
+fi
+
+# $prefix will be prefixed to the non-digit part of the password.
+prefix='1'
+
+# Try to find a first all-digit substring in $string, make it $prefix.
+pos=`expr index $string '0123456789'`
+if [[ $pos > 0 ]]
+then
+  len=1
+  pos=`expr $pos - 1`
+  while [[ ${string:pos+len:1} == [0-9] ]]
+  do
+    len=`expr $len + 1`
+  done
+  prefix=${string:pos:len}
+fi
+
+# Return password.
+echo $prefix$string | cut -c -8
