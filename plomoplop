@@ -8,14 +8,18 @@
 # For an alternative, much shorter (one-line) bash implementation that
 # depends on xxd, see: <http://codegolf.stackexchange.com/a/4995>
 
-# Try to get master password and account nick as parameters.
-while getopts 'a:p:' opt; do
+# Try to get master password (-p) and account nick (-a) as parameters.
+# If -n is given, set option for echo command to not add final newline.
+while getopts 'na:p:' opt; do
   case $opt in
-    p)
-      masterpw=$OPTARG
+    n)
+      setn='-n'
       ;;
     a)
       accountnick=$OPTARG
+      ;;
+    p)
+      masterpw=$OPTARG
       ;;
     ?)
       echo 'usage: plomoplop [-p master_password] [-a account_nickname]'
@@ -78,5 +82,6 @@ then
   prefix=${string:pos:len}
 fi
 
-# Return password.
-echo $prefix$string | cut -c -8
+# Cut string result down to password length.
+pw=`echo -n $prefix$string | cut -c -8`
+echo $setn $pw
