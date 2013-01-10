@@ -15,7 +15,6 @@ then
 fi
 
 # Concatenate parameters to $string; get its md5 sum in binary.
-# value's base64 encoding.
 string=`echo -n $1$2 | openssl dgst -md5 -binary`
 
 # Generate URL-safe base64 string from binary md5 sum.
