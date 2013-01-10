@@ -8,21 +8,38 @@
 # For an alternative, much shorter (one-line) bash implementation that
 # depends on xxd, see: <http://codegolf.stackexchange.com/a/4995>
 
-# Get account nickname as parameter.
-if [[ $1 == '' ]]
-then
-  echo 'usage: plomoplop ACCOUNT_NICKNAME'
-  exit
+# Try to get master password and account nick as parameters.
+while getopts 'a:p:' opt; do
+  case $opt in
+    p)
+      masterpw=$OPTARG
+      ;;
+    a)
+      accountnick=$OPTARG
+      ;;
+    ?)
+      echo 'usage: plomoplop [-p master_password] [-a account_nickname]'
+      exit 1
+      ;;
+  esac
+done
+
+# Read in account nick if not given by parameter.
+if [[ $accountnick == '' ]]; then
+  echo 'Enter account nickname:'
+  read -r accountnick
 fi
 
-# Read in invisible passwort.
-echo 'Enter master password:'
-stty -F `tty` -echo
-read -r masterpw
-stty -F `tty` echo
+# Read in master password, invisibly, if not given by parameter.
+if [[ $masterpw == '' ]]; then
+  echo 'Enter master password:'
+  stty -F `tty` -echo
+  read -r masterpw
+  stty -F `tty` echo
+fi
 
 # Concatenate parameters to $string; get md5sum's hex representation.
-string=`echo -n $masterpw$1 | md5sum | cut -c-32`
+string=`echo -n $masterpw$accountnick | md5sum | cut -c-32`
 
 # Transform hex representation of md5sum to binary data.
 string=`echo -e $(echo -n $string | sed -e 's/../\\\x&/g')`
