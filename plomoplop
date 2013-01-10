@@ -8,14 +8,21 @@
 # For an alternative, much shorter (one-line) bash implementation that
 # depends on xxd, see: <http://codegolf.stackexchange.com/a/4995>
 
-if [[ $1 == '' || $2 == '' ]]
+# Get account nickname as parameter.
+if [[ $1 == '' ]]
 then
-  echo 'usage: plomoplom.sh MASTER_PASSWORD ACCOUNT_NICKNAME'
+  echo 'usage: plomoplop ACCOUNT_NICKNAME'
   exit
 fi
 
+# Read in invisible passwort.
+echo 'Enter master password:'
+stty -F `tty` -echo
+read -r masterpw
+stty -F `tty` echo
+
 # Concatenate parameters to $string; get md5sum's hex representation.
-string=`echo -n $1$2 | md5sum | cut -c-32`
+string=`echo -n $masterpw$1 | md5sum | cut -c-32`
 
 # Transform hex representation of md5sum to binary data.
 string=`echo -e $(echo -n $string | sed -e 's/../\\\x&/g')`
