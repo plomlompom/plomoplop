@@ -30,12 +30,19 @@ if [[ $accountnick == '' ]]; then
   read -r accountnick
 fi
 
-# Read in master password, invisibly, if not given by parameter.
+# Read in master password, invisibly, if not given by parameter. Demand
+# master password twice to make sure it was typed in correctly.
 if [[ $masterpw == '' ]]; then
   echo 'Enter master password:'
   stty -F `tty` -echo
   read -r masterpw
+  echo 'Re-type master password:'
+  read -r masterpw_cmp
   stty -F `tty` echo
+  if [[ $masterpw != $masterpw_cmp ]]; then
+    echo 'Error: Master password was not typed in identically twice.'
+    exit 1
+  fi
 fi
 
 # Concatenate parameters to $string; get md5sum's hex representation.
