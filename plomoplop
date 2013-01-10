@@ -1,9 +1,7 @@
 #/bin/bash
 
-# plomoplop:
-# 
-# plomlompom's bash implementation of the Oplop algorithm as described
-# in <http://code.google.com/p/oplop/wiki/HowItWorks>
+# plomoplop: plomlompom's bash implementation of the oplop algorithm as
+# described in <http://code.google.com/p/oplop/wiki/HowItWorks>
 # 
 # For an alternative, much shorter (one-line) bash implementation that
 # depends on xxd, see: <http://codegolf.stackexchange.com/a/4995>
@@ -73,8 +71,7 @@ string=`echo $string | base64 | tr '+' '-' | tr '/' '_'`
 
 # If the first 8 chars contain a digit, return those as the password.
 pwtemp=`echo $string | cut -c -8`
-if [[ $pwtemp == *[0-9]* ]]
-then
+if [[ $pwtemp == *[0-9]* ]]; then
   echo $pwtemp
   exit
 fi
@@ -84,12 +81,10 @@ prefix='1'
 
 # Try to find a first all-digit substring in $string, make it $prefix.
 pos=`expr index $string '0123456789'`
-if [[ $pos > 0 ]]
-then
+if [[ $pos > 0 ]]; then
   len=1
   pos=`expr $pos - 1`
-  while [[ ${string:pos+len:1} == [0-9] ]]
-  do
+  while [[ ${string:pos+len:1} == [0-9] ]]; do
     len=`expr $len + 1`
   done
   prefix=${string:pos:len}
