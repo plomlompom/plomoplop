@@ -10,8 +10,21 @@
 
 # Try to get master password (-p) and account nick (-a) as parameters.
 # If -n is given, set option for echo command to not add final newline.
-while getopts 'na:p:' opt; do
+while getopts ':hna:p:' opt; do
   case $opt in
+    h)
+      echo 'Usage: plomoplop [OPTION]
+Generate password from a master password and an account nickname as described
+by the oplop algorithm.
+
+  -h                    Display this help.
+  -n                    Do not add final newline to password output.
+  -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
+  -p MASTER_PASSWORD    Set master password (instead of prompting for it).
+
+For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
+      exit 0
+      ;;
     n)
       setn='-n'
       ;;
@@ -22,7 +35,7 @@ while getopts 'na:p:' opt; do
       masterpw=$OPTARG
       ;;
     ?)
-      echo 'usage: plomoplop [-p master_password] [-a account_nickname]'
+      echo 'Bad command syntax. Try "plomoplop -h" for help.'
       exit 1
       ;;
   esac
