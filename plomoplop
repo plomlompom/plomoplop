@@ -3,8 +3,8 @@
 # plomoplop: plomlompom's bash implementation of the oplop algorithm as
 # described in <http://code.google.com/p/oplop/wiki/HowItWorks>
 # 
-# For an alternative, much shorter (one-line) bash implementation that
-# depends on xxd, see: <http://codegolf.stackexchange.com/a/4995>
+# Copyright 2013 Christian Heller / <http://www.plomlompom.de/>
+# License: GPLv3 or any later version. See file LICENSE for details.
 
 # Try to get master password (-p) and account nick (-a) as parameters.
 # If -n is given, set option for echo command to not add final newline.
