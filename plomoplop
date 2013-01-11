@@ -8,7 +8,7 @@
 
 # Try to get master password (-p) and account nick (-a) as parameters.
 # If -n is given, set option for echo command to not add final newline.
-while getopts ':hna:p:' opt; do
+while getopts ':hna:s' opt; do
   case $opt in
     h)
       echo 'Usage: plomoplop [OPTION]
@@ -18,7 +18,7 @@ by the oplop algorithm.
   -h                    Display this help.
   -n                    Do not add final newline to password output.
   -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
-  -p MASTER_PASSWORD    Set master password (instead of prompting for it).
+  -s                    Read in master password from stdin.
 
 For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
       exit 0
@@ -29,8 +29,8 @@ For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
     a)
       accountnick=$OPTARG
       ;;
-    p)
-      masterpw=$OPTARG
+    s)
+      readstin=1
       ;;
     ?)
       echo 'Bad command syntax. Try "plomoplop -h" for help.'
@@ -38,6 +38,12 @@ For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
       ;;
   esac
 done
+
+# If -s, read in $masterpw from stdin. Then, return stdin to tty prompt.
+if [[ $readstin ]]; then
+  read -r masterpw
+  exec 0< /dev/tty
+fi
 
 # Read in account nick if not given by parameter.
 if [[ $accountnick == '' ]]; then
