@@ -1,5 +1,14 @@
 plomoplop
 =========
 
-plomlompom's oplop implementation in bash.
-Done just for the opportunity of having this ridiculous name.
+plomlompom's "oplop" implementation in bash. Generates a password from a master
+password and an account nickname as <http://code.google.com/p/oplop/> describes.
+Done mostly for the opportunity forthis ridiculous name. 
+
+Usage: plomlompom [OPTION]
+
+Options:
+  -h                    Display this help.
+  -n                    Do not add final newline to password output.
+  -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
+  -s                    Read in master password from stdin.

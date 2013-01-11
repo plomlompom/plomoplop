@@ -15,6 +15,7 @@ while getopts ':hna:s' opt; do
 Generate password from a master password and an account nickname as described
 by the oplop algorithm.
 
+Options:
   -h                    Display this help.
   -n                    Do not add final newline to password output.
   -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
