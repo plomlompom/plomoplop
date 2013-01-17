@@ -8,7 +8,7 @@
 
 # Try to get master password (-p) and account nick (-a) as parameters.
 # If -n is given, set option for echo command to not add final newline.
-while getopts ':hna:s' opt; do
+while getopts ':ha:s' opt; do
   case $opt in
     h)
       echo 'Usage: plomoplop [OPTION]
@@ -17,15 +17,11 @@ by the oplop algorithm.
 
 Options:
   -h                    Display this help.
-  -n                    Do not add final newline to password output.
   -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
   -s                    Read in master password from stdin.
 
 For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
       exit 0
-      ;;
-    n)
-      setn='-n'
       ;;
     a)
       accountnick=$OPTARG
@@ -98,5 +94,4 @@ if [[ $pos > 0 ]]; then
 fi
 
 # Cut string result down to password length.
-pw=`echo -n $prefix$string | cut -c -8`
-echo $setn $pw
+echo -n $prefix$string | cut -c -8
