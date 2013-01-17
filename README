@@ -18,6 +18,7 @@ Options:
   -h                    Display this help.
   -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
   -s                    Read in master password from stdin.
+  -1                    Only ask once for the master password.
 
 Ownership
 ---------

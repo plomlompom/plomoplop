@@ -8,7 +8,7 @@
 
 # Try to get master password (-p) and account nick (-a) as parameters.
 # If -n is given, set option for echo command to not add final newline.
-while getopts ':ha:s' opt; do
+while getopts ':ha:s1' opt; do
   case $opt in
     h)
       echo 'Usage: plomoplop [OPTION]
@@ -19,6 +19,7 @@ Options:
   -h                    Display this help.
   -a ACCOUNT_NICKNAME   Set account nickname (instead of prompting for it).
   -s                    Read in master password from stdin.
+  -1                    Only ask once for the master password.
 
 For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
       exit 0
@@ -28,6 +29,9 @@ For details on the oplop algorithm, see: http://code.google.com/p/oplop/'
       ;;
     s)
       readstin=1
+      ;;
+    1)
+      setonce=1
       ;;
     ?)
       echo 'Bad command syntax. Try "plomoplop -h" for help.'
@@ -54,12 +58,16 @@ if [[ $masterpw == '' ]]; then
   echo 'Enter master password:'
   stty -F `tty` -echo
   read -r masterpw
-  echo 'Re-type master password:'
-  read -r masterpw_cmp
-  stty -F `tty` echo
-  if [[ $masterpw != $masterpw_cmp ]]; then
-    echo 'Error: Master password was not typed in identically twice.'
-    exit 1
+  if [[ $setonce != '1' ]]; then
+    echo 'Re-type master password:'
+    read -r masterpw_cmp
+    stty -F `tty` echo
+    if [[ $masterpw != $masterpw_cmp ]]; then
+      echo 'Error: Master password was not typed in identically twice.'
+      exit 1
+    fi
+  else
+    stty -F `tty` echo
   fi
 fi
 
