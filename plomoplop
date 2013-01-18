@@ -48,26 +48,21 @@ fi
 
 # Read in account nick if not given by parameter.
 if [[ $accountnick == '' ]]; then
-  echo 'Enter account nickname:'
-  read -r accountnick
+  read -rp 'Enter account nickname: ' accountnick
 fi
 
 # Read in master password, invisibly, if not given by parameter. Demand
 # master password twice to make sure it was typed in correctly.
 if [[ $masterpw == '' ]]; then
-  echo 'Enter master password:'
-  stty -F `tty` -echo
-  read -r masterpw
+  read -rsp 'Enter master password: ' masterpw
+  echo
   if [[ $setonce != '1' ]]; then
-    echo 'Re-type master password:'
-    read -r masterpw_cmp
-    stty -F `tty` echo
+    read -rsp 'Enter master password (repeat): ' masterpw_cmp
+    echo
     if [[ $masterpw != $masterpw_cmp ]]; then
-      echo 'Error: Master password was not typed in identically twice.'
+      echo 'Error: The two password did not match.'
       exit 1
     fi
-  else
-    stty -F `tty` echo
   fi
 fi
 
